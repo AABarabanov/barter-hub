@@ -201,3 +201,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Дополнение к стандартному Python.gitignore
+specs
