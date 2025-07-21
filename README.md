@@ -1,4 +1,4 @@
-# BarterHub - P2P платформа для обмена товарами
+# BarterHub - платформа для обмена товарами
 
 [![Status](https://img.shields.io/badge/status-active_development-orange)](https://github.com/yourname/barter-hub)
 [![Progress](https://img.shields.io/badge/progress-30%25-yellow)](https://github.com/yourname/barter-hub)
