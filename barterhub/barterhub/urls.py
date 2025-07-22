@@ -17,10 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from ads.views import register
+import ads.views
 
 urlpatterns = [
+    path("", ads.views.index, name="index"),
     path("admin/", admin.site.urls),
     path("ads/", include("ads.urls")),
-    path("register/", register, name="register"),
+    path("register/", ads.views.register, name="register"),
 ]

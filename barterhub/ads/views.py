@@ -1,10 +1,13 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-# Create your views here.
-
 from .models import Ad
 from .forms import AdForm, ProposalForm, RegisterForm
+
+
+def index(request):
+    # Простая заглушка для начала
+    return render(request, "ads/index.html", {"title": "Главная страница"})
 
 
 def ad_list(request: HttpRequest) -> HttpResponse:
