@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 # Create your views here.
 
 from .models import Ad
-from .forms import AdForm, ProposalForm
+from .forms import AdForm, ProposalForm, RegisterForm
 
 
 def ad_list(request: HttpRequest) -> HttpResponse:
@@ -92,3 +92,15 @@ def ad_detail(request, ad_id):
 
     ad = get_object_or_404(Ad, id=ad_id)
     return render(request, "ads/ad_detail.html", {"ad": ad})
+
+
+def register(request):
+    # TODO: Добавить доки
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    else:
+        form = RegisterForm()
+    return render(request, "ads/register.html", {"form": form})
