@@ -25,10 +25,9 @@ class MyAdsListView(AdListView):
 
 
 def home(request):
+    latest_ads = Ad.objects.all().order_by("-created_at")[:4]
     return render(
-        request,
-        "ads/index.html",
-        {"user": request.user},  # Используем существующий шаблон
+        request, "ads/index.html", {"user": request.user, "latest_ads": latest_ads}
     )
 
 
