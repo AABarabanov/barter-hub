@@ -1,31 +1,62 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
+from django.views.generic import ListView, UpdateView, DeleteView
+from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import Ad
 from .forms import AdForm, ProposalForm, RegisterForm
 
 
+# todo: Документация!
+class AdListView(ListView):
+    model = Ad
+    template_name = "ads/ad_list.html"
+    context_object_name = "ads"
+
+    def get_queryset(self):
+        # Базовый запрос - все объявления
+        return Ad.objects.all()
+
+
+class MyAdsListView(AdListView):
+    def get_queryset(self):
+        # Объявления текущего пользователя
+        return super().get_queryset().filter(user=self.request.user)
+
+
+class AdUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Ad
+    fields = ["title", "description", "category", "condition"]
+    template_name = "ads/ad_edit.html"
+
+    def test_func(self):
+        ad = self.get_object()
+        return self.request.user == ad.user
+
+    def get_success_url(self):
+        return reverse("ad_detail", kwargs={"ad_id": self.object.pk})
+
+
+class AdDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Ad
+    template_name = "ads/ad_confirm_delete.html"
+    success_url = reverse_lazy("my_ads")
+
+    def test_func(self):
+        ad = self.get_object()
+        return self.request.user == ad.user
+
+    def get_success_url(self):
+        return self.success_url
+
+
 def home(request):
-    
-    return render(request, 'ads/index.html', {  # Используем существующий шаблон
-        
-        'user': request.user
-    })
-
-
-def ad_list(request: HttpRequest) -> HttpResponse:
-    """
-    Функция для отображения списка всех объявлений, отсортированных по дате создания (сначала свежие).
-
-    Args:
-        request (HttpRequest): Объект HTTP-запроса.
-
-    Returns:
-        (HttpResponse): HTTP-ответ с HTML-страницей, содержащей список объявлений.
-    """
-    ads = Ad.objects.all().order_by("-created_at")
-    return render(request, "ads/ad_list.html", {"ads": ads})
+    latest_ads = Ad.objects.all().order_by("-created_at")[:4]
+    return render(
+        request, "ads/index.html", {"user": request.user, "latest_ads": latest_ads}
+    )
 
 
 def ad_create(request: HttpRequest) -> HttpResponse:
@@ -108,7 +139,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect("home")
     else:
         form = RegisterForm()
     return render(request, "ads/register.html", {"form": form})

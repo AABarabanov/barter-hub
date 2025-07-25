@@ -9,23 +9,28 @@
     </div>
 </div>
 
-<div class="container">
-    <h2 class="mb-4">Рекомендуемые объявления</h2>
+<div class="container mt-4">
+    <h2>Последние объявления</h2>
+    {% if latest_ads %}
     <div class="row">
-        {% for ad in featured_ads %}
+        {% for ad in latest_ads %}
         <div class="col-md-3 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5>{{ ad.title }}</h5>
-                    <p class="text-muted">{{ ad.get_condition_display }}</p>
+                    <h5 class="card-title">{{ ad.title }}</h5>
+                    <p class="card-text">{{ ad.description|truncatechars:100 }}</p>
+                    <p class="text-muted small">
+                        {{ ad.created_at|date:"d.m.Y" }} |
+                        {{ ad.user.username }}
+                    </p>
+                    <a href="{% url 'ad_detail' ad.id %}" class="btn btn-sm btn-primary">Подробнее</a>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <div class="col-12">
-            <div class="alert alert-info">Пока нет рекомендуемых объявлений</div>
-        </div>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="alert alert-info">Пока нет объявлений</div>
+    {% endif %}
 </div>
 {% endblock %}

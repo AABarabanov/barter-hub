@@ -17,11 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.views import LogoutView
 import ads.views
 
 urlpatterns = [
     path("", ads.views.home, name="home"),
     path("admin/", admin.site.urls),
     path("ads/", include("ads.urls")),
+    path("my/", ads.views.MyAdsListView.as_view(), name="my_ads"),
     path("register/", ads.views.register, name="register"),
+    path("logout/", LogoutView.as_view(), name="logout"),  #!
 ]
