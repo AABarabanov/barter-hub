@@ -8,6 +8,11 @@
     {% block extra_css %}{% endblock %}
 
     <style>
+        .navbar-user-info {
+            color: white;
+            margin-right: 15px;
+            align-self: center
+
         .hero-section {
             background: linear-gradient(rgba(0,0,0,0.7), url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
@@ -28,13 +33,16 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">BarterHub</a>
             <div class="d-flex align-items-center">
                 {% if user.is_authenticated %}
+                    <span class="navbar-user-info">
+                        {{ user.username }} <!-- Или user.get_full_name() -->
+                    </span>
                     <a href="{% url 'my_ads' %}" class="btn btn-sm btn-outline-light me-2">Мои объявления</a>
-                    <form action="{% url 'logout' %}" method="post" class="logout-form">
+                    <form action="{% url 'logout' %}" method="post" class="d-inline">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-danger">Выйти</button>
                     </form>
