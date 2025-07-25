@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Все объявления</h1>
+
+<h1>
+  {% if request.path == '/my/' %}
+        Мои объявления
+    {% else %}
+        Все объявления
+    {% endif %}
+</h1>
+
 <a href="{% url 'ad_create' %}">Создать объявление</a>
 
 <ul>
