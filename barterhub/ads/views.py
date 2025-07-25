@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
+from django.views.generic import ListView
 
 from .models import Ad
 from .forms import AdForm, ProposalForm, RegisterForm
@@ -13,19 +14,15 @@ def home(request):
         'user': request.user
     })
 
-
-def ad_list(request: HttpRequest) -> HttpResponse:
-    """
-    Функция для отображения списка всех объявлений, отсортированных по дате создания (сначала свежие).
-
-    Args:
-        request (HttpRequest): Объект HTTP-запроса.
-
-    Returns:
-        (HttpResponse): HTTP-ответ с HTML-страницей, содержащей список объявлений.
-    """
-    ads = Ad.objects.all().order_by("-created_at")
-    return render(request, "ads/ad_list.html", {"ads": ads})
+#todo: Документация!
+class AdListView(ListView):
+    model = Ad
+    template_name = 'ads/ad_list.html'
+    context_object_name = 'ads'
+    
+    def get_queryset(self):
+        # Базовый запрос - все объявления
+        return Ad.objects.all()
 
 
 def ad_create(request: HttpRequest) -> HttpResponse:
