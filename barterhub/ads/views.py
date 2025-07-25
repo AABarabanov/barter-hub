@@ -1,13 +1,17 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login
 
 from .models import Ad
 from .forms import AdForm, ProposalForm, RegisterForm
 
 
-def index(request):
-    # Простая заглушка для начала
-    return render(request, "ads/index.html", {"title": "Главная страница"})
+def home(request):
+    
+    return render(request, 'ads/index.html', {  # Используем существующий шаблон
+        
+        'user': request.user
+    })
 
 
 def ad_list(request: HttpRequest) -> HttpResponse:
@@ -102,8 +106,9 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("login")
+            user = form.save()
+            login(request, user)
+            return redirect('home')
     else:
         form = RegisterForm()
     return render(request, "ads/register.html", {"form": form})

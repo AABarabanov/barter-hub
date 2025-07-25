@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ title }}</title>
-</head>
-<body>
-    <h1>Добро пожаловать в BarterHub!</h1>
-    <p>Платформа для обмена вещами</p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-section bg-dark text-white py-5 mb-4">
+    <div class="container text-center">
+        <h1 class="display-4">Пространство для честного обмена</h1>
+        <p class="lead">Меняйтесь с умом — находите ценное, избавляйтесь от ненужного</p>
+        <a href="{% url 'ad_list' %}" class="btn btn-primary btn-lg">Смотреть объявления</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="mb-4">Рекомендуемые объявления</h2>
+    <div class="row">
+        {% for ad in featured_ads %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5>{{ ad.title }}</h5>
+                    <p class="text-muted">{{ ad.get_condition_display }}</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">Пока нет рекомендуемых объявлений</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
