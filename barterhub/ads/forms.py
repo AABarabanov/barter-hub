@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .models import Ad, ExchangeProposal
 
 
@@ -23,3 +25,11 @@ class ProposalForm(forms.ModelForm):
         model = ExchangeProposal
         fields = ["ad_receiver", "comment"]
         widgets = {"comment": forms.Textarea(attrs={"rows": 3})}
+
+
+class RegisterForm(UserCreationForm):
+    """Класс, описывающий форму для регистрации"""
+
+    class Meta:
+        model = User
+        fields = ["username", "password1", "password2"]
