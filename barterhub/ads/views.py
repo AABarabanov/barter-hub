@@ -1,7 +1,9 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import Ad
 from .forms import AdForm, ProposalForm, RegisterForm
@@ -22,6 +24,26 @@ class MyAdsListView(AdListView):
     def get_queryset(self):
         # Объявления текущего пользователя
         return super().get_queryset().filter(user=self.request.user)
+
+
+class AdUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Ad
+    fields = ["title", "description", "category", "condition"]
+    template_name = "ads/ad_edit.html"
+
+    def test_func(self):
+        ad = self.get_object()
+        return self.request.user == ad.user
+
+
+class AdDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Ad
+    template_name = "ads/ad_confirm_delete.html"
+    success_url = reverse_lazy("ads_list")
+
+    def test_func(self):
+        ad = self.get_object()
+        return self.request.user == ad.user
 
 
 def home(request):
