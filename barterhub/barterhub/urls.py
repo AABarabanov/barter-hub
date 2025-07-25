@@ -23,5 +23,6 @@ urlpatterns = [
     path("", ads.views.home, name="home"),
     path("admin/", admin.site.urls),
     path("ads/", include("ads.urls")),
+    path("my/", ads.views.MyAdsListView.as_view(), name="my_ads"),  #!
     path("register/", ads.views.register, name="register"),
 ]

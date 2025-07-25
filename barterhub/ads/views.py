@@ -7,22 +7,29 @@ from .models import Ad
 from .forms import AdForm, ProposalForm, RegisterForm
 
 
-def home(request):
-    
-    return render(request, 'ads/index.html', {  # Используем существующий шаблон
-        
-        'user': request.user
-    })
-
-#todo: Документация!
+# todo: Документация!
 class AdListView(ListView):
     model = Ad
-    template_name = 'ads/ad_list.html'
-    context_object_name = 'ads'
-    
+    template_name = "ads/ad_list.html"
+    context_object_name = "ads"
+
     def get_queryset(self):
         # Базовый запрос - все объявления
         return Ad.objects.all()
+
+
+class MyAdsListView(AdListView):
+    def get_queryset(self):
+        # Объявления текущего пользователя
+        return super().get_queryset().filter(user=self.request.user)
+
+
+def home(request):
+    return render(
+        request,
+        "ads/index.html",
+        {"user": request.user},  # Используем существующий шаблон
+    )
 
 
 def ad_create(request: HttpRequest) -> HttpResponse:
@@ -105,7 +112,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect("home")
     else:
         form = RegisterForm()
     return render(request, "ads/register.html", {"form": form})
