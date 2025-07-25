@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.views.generic import ListView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import Ad
@@ -34,6 +34,9 @@ class AdUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         ad = self.get_object()
         return self.request.user == ad.user
+
+    def get_success_url(self):
+        return reverse("ad_detail", kwargs={"ad_id": self.object.pk})
 
 
 class AdDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
