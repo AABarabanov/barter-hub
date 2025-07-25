@@ -1,27 +1,45 @@
 # BarterHub - платформа для обмена товарами
 
-[![Status](https://img.shields.io/badge/status-active_development-orange)](https://github.com/yourname/barter-hub)
-[![Progress](https://img.shields.io/badge/progress-30%25-yellow)](https://github.com/yourname/barter-hub)
+![Status](https://img.shields.io/badge/status-active_development-orange)
+![Progress](https://img.shields.io/badge/progress-75%25-brightgreen)
 
 Django-приложение для организации обмена товарами между пользователями.
+___
+![Python 3](https://img.shields.io/badge/Python-3.13-blue?logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-5.2-%23092E20?logo=django&logoColor=white)
 
-## Реализованный функционал
+### Основной функционал
 
-### Основные компоненты
-- **Приложение ads**
-  - Модели: `Ad` (объявления), `ExchangeProposal` (предложения обмена)
-  - Формы CRUD для объявлений
-  - Миграции применены
-- **Конфигурация проекта**
-  - Локализация (ru-ru)
-  - Часовой пояс (Europe/Moscow)
-- **Шаблоны**
-  - Базовые views для работы с объявлениями
-- **Документация**
-  - Актуализирована по текущей реализации
 
-### Технический стек
+- **Аутентификация**
+  - Регистрация/авторизация
+  - Персонализированный интерфейс
+  - Выход из системы
 
-Python |
-Django |
-SQLite 
+
+- **Объявления**
+  - Создание/редактирование/удаление
+  - Просмотр списка
+  - Личный кабинет с объявлениями
+
+
+- **Интерфейс**
+  - Адаптивные шаблоны
+  - Индикатор текущего пользователя
+
+### Конфигурация
+
+- Локализация: ru-RU
+- Часовой пояс: Europe/Moscow
+
+### Документация 
+
+- Актуализирована по текущей реализации
+
+
+### В разработке...
+- Механика обмена
+- Система подтверждения сделок
+- История операций
+
+___
