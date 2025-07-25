@@ -42,11 +42,14 @@ class AdUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class AdDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Ad
     template_name = "ads/ad_confirm_delete.html"
-    success_url = reverse_lazy("ads_list")
+    success_url = reverse_lazy("my_ads")
 
     def test_func(self):
         ad = self.get_object()
         return self.request.user == ad.user
+
+    def get_success_url(self):
+        return self.success_url
 
 
 def home(request):
